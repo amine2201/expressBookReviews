@@ -51,16 +51,14 @@ public_users.get('/review/:isbn',function (req, res) {
     else res.send("Book not found");
 });
 //task 10
-function getAllBooks(){
+async function getAllBooks(){
     return new Promise((resolve,reject)=>{
         resolve(books);
     })
-}
-// Get the book list available in the shop async
-public_users.get('/',function (req, res) {
-    getAllBooks()
-    .then(books=>res.send(JSON.stringify(books,null,4)))
-    
+} 
+public_users.get('/',async function (req, res) {
+    const books_async=await getAllBooks();
+    res.send(JSON.stringify(books_async,null,4));
 });
 
 //task 11
@@ -96,7 +94,7 @@ public_users.get('/author/:author',function (req, res) {
     .catch(err => res.status(404).send(err));
 });
 
-//task 12
+//task 13
 function getBookByTitle(title){
     return new Promise((resolve,reject)=>{
        let booksArray = Object.values(books);
@@ -106,7 +104,7 @@ function getBookByTitle(title){
        else reject("title not found");
     })
 }
-// Get book details based on author
+// Get book details based on tite
 public_users.get('/title/:title',function (req, res) {
    getBookByTitle(req.params.title)
    .then(book => res.send(JSON.stringify(book,null,4)))
